@@ -37,11 +37,30 @@ def display_image(l):
 	arr = np.zeros([16,8])
 	for i in range(0,128,8):
 		arr[i/8] = l[i:i+8] 
-	
-	print arr
+	#print arr
 	plt.imshow(arr, interpolation='nearest')
 	plt.show()
 
-data = read_data()
-trng,tsting = strip_data(data)
-display_image(trng['q'][21])
+def zerolistmaker(n):
+    listofzeros = [0] * n
+    return listofzeros
+
+def getCharIndexArray(ch):
+	y = zerolistmaker(26)
+	y[ord(ch) - ord('a')] = 1
+	return y
+
+def getFormattedData(d):
+	X=[]
+	Y=[]
+	for key in d.keys():
+		for l in d[key]:
+			x = l
+			y = getCharIndexArray(key)
+			X.append(x)
+			Y.append(y)
+	diction = {}
+	diction["X"] = X
+	diction["Y"] = Y
+	return diction
+
