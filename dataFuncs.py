@@ -56,18 +56,5 @@ def getCharIndexArray(ch):
 	y[ord(ch) - ord('a')] = 1
 	return y
 
-def getFormattedData(d):
-	X=[]
-	Y=[]
-	for key in d.keys():
-		for l in d[key]:
-			x = l
-			y = getCharIndexArray(key)
-			X.append(x)
-			Y.append(y)
-	diction = {}
-	diction["X"] = X
-	diction["Y"] = Y
-	return diction
 
 
