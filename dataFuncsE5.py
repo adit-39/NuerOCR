@@ -10,14 +10,13 @@ def get_data():
 		Y=[]
 		for row in images:
 			inp=[]
-			out=[]
-			char = row[1]
-			out = getCharIndexArray(char)
+			out = row[1]
+			#out = getCharIndexArray(char)
 			p = row[6:]
 			for j in p:
 				if j=='':
 					continue
-				inp.append(int(j))
+				inp.append(j)
 			X.append(inp)
 			Y.append(out)
 		d = {}
@@ -25,31 +24,42 @@ def get_data():
 		d["Y"] = Y
 		return d
 
-
+ 
 def generate_subsets(d):
-	sets = {}
-	sets["v"] = []
-	sets["c"] = []
+	train = {}
+	test = {}
+	train["c"] = []
+	test["v"] = []
+	test["c"] = []
+	train["v"] = []
+
 	inputs = d["X"]
 	outputs = d["Y"]
+	f1 = False
 	for i in range(len(outputs)):
 		if get_type(outputs[i]):
-			if len(sets["v"]) < 500 :
-				sets["v"].append(inputs[i])
+			if len(train["v"]) < 2000 :
+				train["v"].append(inputs[i])
+			elif len(test["v"]) < 1000:
+				test["v"].append(inputs[i])
 			else:
-				if len(sets["c"]) == 500:
-					break
+				f1 = True
 		else:
-			if len(sets["c"]) < 500:
-				sets["c"].append(inputs[i])
-			if len(sets["v"]) == 500:
+			if len(train["c"]) < 2000:
+				train["c"].append(inputs[i])
+			elif len(test["c"]) < 1000 :
+				test["c"].append(inputs[i])
+			else :
+				if f1 == True:
 					break
-	return sets
+
+	return train,test
+
 		
 def get_type(c):
 	if c in ['a','e','i','o','u']:
 		return True
-	else
+	else:
 		return False
 
 
@@ -61,6 +71,14 @@ def getCharIndexArray(ch):
 	y = zerolistmaker(26)
 	y[ord(ch) - ord('a')] = 1
 	return y
+
+def display_image(l):
+	arr = np.zeros([16,8])
+	for i in range(0,128,8):
+		arr[i/8] = l[i:i+8] 
+	plt.imshow(arr, interpolation='nearest')
+	plt.show()
+
 
 
 def strip_data(d):
@@ -75,3 +93,4 @@ def strip_data(d):
 		testing[key].extend(d[key][800:1000])
 
 	return training,testing
+
