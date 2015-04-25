@@ -31,5 +31,17 @@ def strip_data(d):
 		testing[key].extend(d[key][32:40])
 	return training,testing
 
+
+def display_image(l):
+	#print l
+	arr = np.zeros([16,8])
+	for i in range(0,128,8):
+		arr[i/8] = l[i:i+8] 
+	
+	print arr
+	plt.imshow(arr, interpolation='nearest')
+	plt.show()
+
 data = read_data()
 trng,tsting = strip_data(data)
+display_image(trng['q'][21])
